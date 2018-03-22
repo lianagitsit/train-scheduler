@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     console.log("ready");
 
     // Add firebase, set initial values
@@ -9,17 +9,18 @@ $(document).ready(function() {
         projectId: "train-scheduler-9b8ef",
         storageBucket: "",
         messagingSenderId: "213809961180"
-      };
-      firebase.initializeApp(config); 
+    };
 
-      var database = firebase.database();
+    firebase.initializeApp(config);
 
-      var trainName = "";
-      var destination = "";
-      var trainTime = "";
-      var frequency = "";
+    var database = firebase.database();
 
-    $("#submitInput").on("click", function(event){
+    var trainName = "";
+    var destination = "";
+    var trainTime = "";
+    var frequency = "";
+
+    $("#submitInput").on("click", function (event) {
         event.preventDefault();
 
         // store input values from form
@@ -27,7 +28,7 @@ $(document).ready(function() {
         destination = $("#destinationInput").val().trim();
         trainTime = $("#trainTimeInput").val().trim();
         frequency = $("#frequencyInput").val().trim();
-        
+
         // push the data to the database
         database.ref().push({
             train: trainName,
@@ -35,5 +36,50 @@ $(document).ready(function() {
             time: trainTime,
             frequency: frequency,
         })
+    })
+
+    database.ref().on("child_added", function (snapshot) {
+        trainName = snapshot.val().train;
+        destination = snapshot.val().destination;
+        trainTime = snapshot.val().time;
+        frequency = snapshot.val().frequency;
+
+        var tableData = [trainName, destination, frequency]
+        var nextArrival, minutesAway, currentTime, diff, elapsed;
+
+        var trainTimeConverted = moment(trainTime, "HH:mm").subtract(1, "years");
+        console.log("train time conv: ", trainTimeConverted._i)
+
+        currentTime = moment().toLocaleString();
+        console.log("current: ", currentTime);
+
+        diff = moment().diff(moment(trainTimeConverted), "minutes")
+        console.log("diff: ", diff);
+
+        elapsed = diff % frequency;
+        console.log("elapsed: ", elapsed);
+
+        minutesAway = frequency - elapsed;
+        console.log("minutes away: ", minutesAway);
+
+        nextArrival = moment(currentTime).add(minutesAway, "minutes").format("h:mm A");
+        // nextArrival.toLocaleString();
+        console.log("next arrival: ", nextArrival);
+        
+        tableData.push(nextArrival);
+        tableData.push(minutesAway);
+
+        var row = $("<tr>")
+
+        for (var i = 0; i < tableData.length; i++) {
+            var cell = $("<td>");
+            $(cell).text(tableData[i]);
+            $(row).append(cell);
+        }
+
+        $("tbody").prepend(row)
+
+    }, function (error) {
+        console.log("Caught errors: ", error.code)
     })
 })
