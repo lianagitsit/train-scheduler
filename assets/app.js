@@ -48,23 +48,23 @@ $(document).ready(function () {
         var nextArrival, minutesAway, currentTime, diff, elapsed;
 
         var trainTimeConverted = moment(trainTime, "HH:mm").subtract(1, "years");
-        console.log("train time conv: ", trainTimeConverted._i)
+        // console.log("train time conv: ", trainTimeConverted._i)
 
         currentTime = moment().toLocaleString();
-        console.log("current: ", currentTime);
+        // console.log("current: ", currentTime);
 
         diff = moment().diff(moment(trainTimeConverted), "minutes")
-        console.log("diff: ", diff);
+        // console.log("diff: ", diff);
 
         elapsed = diff % frequency;
-        console.log("elapsed: ", elapsed);
+        // console.log("elapsed: ", elapsed);
 
         minutesAway = frequency - elapsed;
-        console.log("minutes away: ", minutesAway);
+        // console.log("minutes away: ", minutesAway);
 
         nextArrival = moment(currentTime).add(minutesAway, "minutes").format("h:mm A");
         // nextArrival.toLocaleString();
-        console.log("next arrival: ", nextArrival);
+        // console.log("next arrival: ", nextArrival);
         
         tableData.push(nextArrival);
         tableData.push(minutesAway);
@@ -72,7 +72,12 @@ $(document).ready(function () {
         var row = $("<tr>")
 
         for (var i = 0; i < tableData.length; i++) {
+            console.log(tableData[i]);
+            console.log(typeof tableData[i]);
+
             var cell = $("<td>");
+            $(cell).attr("class", "cell");
+            
             $(cell).text(tableData[i]);
             $(row).append(cell);
         }

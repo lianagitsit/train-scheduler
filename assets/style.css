@@ -1,0 +1,42 @@
+.bg {
+    background: url('https://static.pexels.com/photos/298018/pexels-photo-298018.jpeg') no-repeat center center;
+    background-size:  100% 350px;
+    position: fixed;
+    width: 100%;
+    height: 350px; /*same height as jumbotron */
+    top:0;
+    left:0;
+    z-index: -1;
+  }
+  
+  .jumbotron {
+    margin-bottom: 0px;
+    height: 350px;
+    color: white;
+    text-shadow: black 0.3em 0.3em 0.3em;
+    background:transparent;
+  }
+
+  .title {
+      font-size: 3em;
+  }
+
+  .info {
+      margin-top: 50px;
+  }
+
+.panel > .panel-heading.schedule, .schedule {
+    background-image: none;
+    background: #423e3e ;
+    color: white ;
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.panel > .panel-heading.schedule, .cell {
+    text-transform: uppercase;
+}
+
+.char{
+    display: inline-block;
+    background: blue;
+}
